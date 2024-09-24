@@ -13,6 +13,12 @@ pipeline {
             checkout scm
             script {
                def gitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+
+
+                       if (gitSha == null || gitSha.isEmpty()) {
+            gitSha = 'latest'
+          }
+
             sh '''
               cd node_app1
               ls -l
