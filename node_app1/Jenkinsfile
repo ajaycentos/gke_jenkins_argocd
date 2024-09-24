@@ -8,6 +8,9 @@ pipeline {
 		label 'agent-nodes'
 	    }
       steps {
+            checkout scm
+            }
+      steps {
         
         sh 'docker build -t ajay/sampleapp:v1 .'
       }
