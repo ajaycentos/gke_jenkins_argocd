@@ -11,11 +11,14 @@ pipeline {
 	    }
       steps {
             checkout scm
+            script {
+               def gitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
             sh '''
               cd node_app1
               ls -l
-              docker build -t ajay/sampleapp:v1 .
+              docker build -t ajay/sampleapp:${gitSha} .
                '''
+	     }
             }
     }
   }
