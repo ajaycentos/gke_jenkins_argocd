@@ -1,0 +1,16 @@
+pipeline {
+  agent {
+        label 'agent-nodes'
+    }
+  stages {
+    stage('Docker Build') {
+      agent {
+		label 'agent-nodes'
+	    }
+      steps {
+        
+        sh 'docker build -it ajay/sampleapp:v1'
+      }
+    }
+  }
+}
