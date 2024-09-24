@@ -9,20 +9,17 @@ pipeline {
       agent {
 		label 'agent-nodes'
 	    }
+environment {
+        tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
+    }
+
       steps {
             checkout scm
-            script {
-               def gitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-
-
-                       if (gitSha == null || gitSha.isEmpty()) {
-            gitSha = 'latest'
-          }
 
             sh '''
               cd node_app1
               ls -l
-              docker build -t ajay/sampleapp:${gitSha} .
+              docker build -t ajay/sampleapp:${tag} .
                '''
 	     }
             }
