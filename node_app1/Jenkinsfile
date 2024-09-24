@@ -9,7 +9,7 @@ pipeline {
 	    }
       steps {
         
-        sh 'docker build -it ajay/sampleapp:v1'
+        sh 'docker build -t ajay/sampleapp:v1 .'
       }
     }
   }
