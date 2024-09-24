@@ -11,9 +11,11 @@ pipeline {
 	    }
       steps {
             checkout scm
-            sh 'cd node_app1'
-            sh 'ls -l'
-            sh 'cd node_app1;docker build -t ajay/sampleapp:v1 .'
+            sh '''
+              cd node_app1
+              ls -l
+              cd node_app1;docker build -t ajay/sampleapp:v1 .
+               '''
             }
     }
   }
