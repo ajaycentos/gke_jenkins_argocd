@@ -11,6 +11,7 @@ pipeline {
 	    }
       steps {
             checkout scm
+            sh 'ls -l'
             sh 'docker build -t ajay/sampleapp:v1 .'
             }
     }
