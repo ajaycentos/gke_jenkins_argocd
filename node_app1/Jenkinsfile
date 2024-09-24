@@ -2,18 +2,17 @@ pipeline {
   agent {
         label 'agent-nodes'
     }
-  stages {
-    stage('Docker Build') {
+  stages 
+  {
+    stage('Docker Build') 
+    {
       agent {
 		label 'agent-nodes'
 	    }
       steps {
             checkout scm
+            sh 'docker build -t ajay/sampleapp:v1 .'
             }
-      steps {
-        
-        sh 'docker build -t ajay/sampleapp:v1 .'
-      }
     }
   }
 }
