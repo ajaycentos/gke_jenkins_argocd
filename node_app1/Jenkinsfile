@@ -18,7 +18,7 @@ pipeline {
                 sh '''
                 cd node_app1
                 ls -l
-                docker build -t sampleapp:${tag} .
+                docker build -t ajaycentos/sampleapp:${tag} .
                 '''
 
                 // Docker login and push
@@ -27,9 +27,9 @@ pipeline {
                     sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
 
                     echo "Pushing Docker image to Docker Hub"
-                    sh "docker push sampleapp:${tag}"
+                    sh "docker push ajaycentos/sampleapp:${tag}"
 
-                    echo "Docker image pushed: sampleapp:${tag}"
+                    echo "Docker image pushed: ajaycentos/sampleapp:${tag}"
                 }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker images'
-            sh 'docker rmi sampleapp:${tag}'
+            sh 'docker rmi ajaycentos/sampleapp:${tag}'
         }
     }
 }
