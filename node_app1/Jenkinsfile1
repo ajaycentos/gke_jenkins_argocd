@@ -1,0 +1,32 @@
+pipeline 
+{
+  agent 
+  {
+        label 'agent-nodes'
+  }
+  stages 
+  {
+    stage('Docker Build') 
+    {
+      agent 
+	{
+		label 'agent-nodes'
+	}
+		environment 
+		{
+        	tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
+    		}	
+
+      		steps 
+		{
+            	checkout scm
+
+            	sh '''
+              	cd node_app1
+              	ls -l
+              	docker build -t ajay/sampleapp:${tag} .
+               	'''
+	     	}
+      }
+    }
+  }

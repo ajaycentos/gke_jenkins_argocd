@@ -1,27 +1,47 @@
 pipeline {
-  agent {
+    agent {
         label 'agent-nodes'
     }
-  stages 
-  {
-    stage('Docker Build') 
-    {
-      agent {
-		label 'agent-nodes'
-	    }
-environment {
-        tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
+    environment {
+        // Replace 'dockerhub-credentials' with your actual credentials ID from Jenkins
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
-
-      steps {
-            checkout scm
-
-            sh '''
-              cd node_app1
-              ls -l
-              docker build -t ajay/sampleapp:${tag} .
-               '''
-	     }
+    stages {
+        stage('Docker Build and Push') {
+            agent {
+                label 'agent-nodes'
             }
+            steps {
+                script {
+                    def tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
+                    echo "Building Docker image with tag: ${tag}"
+                }
+                checkout scm
+
+                sh '''
+                cd node_app1
+                ls -l
+                docker build -t ajay/sampleapp:${tag} .
+                '''
+
+                // Docker login and push
+                script {
+                    echo "Logging in to Docker Hub"
+                    sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+
+                    echo "Pushing Docker image to Docker Hub"
+                    sh "docker push ajay/sampleapp:${tag}"
+
+                    echo "Docker image pushed: ajay/sampleapp:${tag}"
+                }
+            }
+        }
     }
-  }
+    post {
+        always {
+            echo 'Cleaning up Docker images'
+            sh 'docker rmi ajay/sampleapp:${tag}'
+        }
+    }
+}
+
