@@ -5,6 +5,7 @@ pipeline {
     environment {
         // Replace 'dockerhub-credentials' with your actual credentials ID from Jenkins
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
     }
     stages {
         stage('Docker Build and Push') {
@@ -12,10 +13,6 @@ pipeline {
                 label 'agent-nodes'
             }
             steps {
-                script {
-                    def tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
-                    echo "Building Docker image with tag: ${tag}"
-                }
                 checkout scm
 
                 sh '''
