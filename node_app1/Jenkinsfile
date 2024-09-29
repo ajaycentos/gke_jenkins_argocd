@@ -6,7 +6,8 @@ pipeline {
     {
         stage('checkout'){
             steps{
-                git https://github.com/ajaycentos/gke_jenkins_argocd.git
+                git branch: 'branch4', url:https://github.com/ajaycentos/gke_jenkins_argocd.git
+
             }
         }
 
