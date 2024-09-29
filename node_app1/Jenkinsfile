@@ -19,7 +19,7 @@ pipeline {
             steps
             {
                 script{
-                    dockerImage=docker.build("ajaycentos/myapp:${env.BUILD_ID}")
+                    dockerImage=docker.build("ajaycentos/myapp:${env.BUILD_ID}","node_app1")
                 }
             }
         }
