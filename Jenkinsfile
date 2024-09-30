@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Dockerhub Push'){  
             steps{
-                    withCredentials([string(credentialsId: 'github-ajaycentos-pwd', variable: 'dockerhub-pwd')]) {
+                    withCredentials([string(credentialsId: 'docker-pwd-only', variable: 'dockerhub-pwd')]) {
                        sh "docker login -u ajaycentos -p ${dockerhub-pwd}"
                        sh "docker push ajaycentos/sampleapp:${DOCKER_TAG}"
             }          
