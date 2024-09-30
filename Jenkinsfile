@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Build Docker image'){
             steps{
-                sh "docker build . -it ajaycentos/sampleapp:${DOCKER_TAG}"
+                sh "docker build . -t ajaycentos/sampleapp:${DOCKER_TAG}"
             }
         }
     }
