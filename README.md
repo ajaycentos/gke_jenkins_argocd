@@ -1,6 +1,7 @@
 # gke_jenkins_argocd
 GKE Jenkins ArgoCD
 
+This branch will build and deploy app in kuberenetes by copying the modified manifests to vm and applt
 
 Jenkins pipeline sample url
 https://tutorials.releaseworksacademy.com/learn/building-your-first-docker-image-with-jenkins-2-guide-for-developers

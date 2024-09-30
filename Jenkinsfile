@@ -1,9 +1,14 @@
+//This will change build display in Jobs
 currentBuild.displayName="aj-app-#"+currentBuild.number
 
+//Declaratiev pipeline
 pipeline {
+
     agent {
         label 'agent-master'
     }
+
+    // If declared as environment this will be global
     environment{
         DOCKER_TAG = getDockerTag()
     }
