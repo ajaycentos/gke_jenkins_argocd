@@ -15,7 +15,9 @@ pipeline {
             }
         }
         stage('Build Docker image'){
-            sh "docker build . -it ajaycentos/sampleapp:${DOCKER_TAG}"
+            steps{
+                sh "docker build . -it ajaycentos/sampleapp:${DOCKER_TAG}"
+            }
         }
     }
 }
