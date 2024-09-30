@@ -1,3 +1,5 @@
+currentBuild.displayName="aj-app-#"+currentBuild.number
+
 pipeline {
     agent {
         label 'agent-master'
