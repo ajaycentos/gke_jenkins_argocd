@@ -28,6 +28,16 @@ pipeline {
 
             }
         }
+        stage('Deploy to k8s'){
+            steps{
+                sh "chmod +x changeTag.sh"
+                sh "./changeTag.sh ${DOCKER_TAG}"
+                sshagent(['vm3-k8s-privatekey']) {
+                    sh 'scp -o StrictHostKeyChecking=no node-app-pod.yml ajay@192.168.56.33:/home/ajay/app1'
+                    
+                }       
+            }
+        }
     }
 }
 

@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sampleapp-deployment
+  namespace: app1  # Specify the namespace
+  labels:
+    app: sampleapp
+spec:
+  replicas: 2  # Single replica
+  selector:
+    matchLabels:
+      app: sampleapp
+  template:
+    metadata:
+      labels:
+        app: sampleapp
+    spec:
+      containers:
+      - name: sampleapp
+        image: docker.io/ajaycentos/sampleapp:tagVersion  # Specific image tag
+        ports:
+        - containerPort: 8000  # Application listens on port 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sampleapp-service
+  namespace: app1  # Specify the namespace
+spec:
+  selector:
+    app: sampleapp
+  ports:
+    - protocol: TCP
+      port: 80  # External port exposed by the service
+      targetPort: 8000  # Internal container port
+      nodePort: 30001  # Port for external access (adjust as needed)
+  type: NodePort  # Expose the service as NodePort for external access
