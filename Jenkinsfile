@@ -32,7 +32,7 @@ pipeline {
 }
 
 def getDockerTag(){
-    def tag = sh (script: 'git rev-parse --short=10 HEAD', returnStdout: true)
+    def tag = sh (script: 'git rev-parse --short=10 HEAD', returnStdout: true).trim()
     return tag 
 }
 
