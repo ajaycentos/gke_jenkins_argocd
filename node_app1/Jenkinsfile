@@ -2,42 +2,12 @@ pipeline {
     agent {
         label 'agent-nodes'
     }
-    environment {
-        // Replace 'dockerhub-credentials' with your actual credentials ID from Jenkins
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
-    }
-    stages {
-        stage('Docker Build and Push') {
-            agent {
-                label 'agent-nodes'
+
+    stages{
+        stage("Git Checkout"){
+            steps{
+                sh "git branch: 'branch4', credentialsId: 'github-credentials', url: 'https://github.com/ajaycentos/gke_jenkins_argocd.git'"
             }
-            steps {
-                checkout scm
-
-                sh '''
-                cd node_app1
-                ls -l
-                docker build -t ajaycentos/sampleapp:${tag} .
-                '''
-
-                // Docker login and push
-                script {
-                    echo "Logging in to Docker Hub"
-                    sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-
-                    echo "Pushing Docker image to Docker Hub"
-                    sh "docker push ajaycentos/sampleapp:${tag}"
-
-                    echo "Docker image pushed: ajaycentos/sampleapp:${tag}"
-                }
-            }
-        }
-    }
-    post {
-        always {
-            echo 'Cleaning up Docker images'
-            sh 'docker rmi ajaycentos/sampleapp:${tag}'
         }
     }
 }
