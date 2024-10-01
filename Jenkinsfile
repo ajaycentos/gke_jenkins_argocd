@@ -33,15 +33,24 @@ pipeline {
 
             }
         }
-        stage('Deploy to k8s'){
-            steps{
-                sh "chmod +x changeTag.sh"
-                sh "./changeTag.sh ${DOCKER_TAG}"
-                sshagent(['vm3-k8s-privatekey']) {
-                    sh 'scp -o StrictHostKeyChecking=no node-app-pod.yml ajay@192.168.56.33:/home/ajay/app1'
-                    sh 'ssh -o StrictHostKeyChecking=no -l ajay 192.168.56.33 kubectl apply -f /home/ajay/app1/node-app-pod.yml'
+        // stage('Deploy to k8s'){
+        //     steps{
+        //         sh "chmod +x changeTag.sh"
+        //         sh "./changeTag.sh ${DOCKER_TAG}"
+        //         sshagent(['vm3-k8s-privatekey']) {
+        //             sh 'scp -o StrictHostKeyChecking=no node-app-pod.yml ajay@192.168.56.33:/home/ajay/app1'
+        //             sh 'ssh -o StrictHostKeyChecking=no -l ajay 192.168.56.33 kubectl apply -f /home/ajay/app1/node-app-pod.yml'
 
-                }       
+        //         }       
+        //     }
+        // }
+        stage('Deploy to K8s'){
+            steps{
+                kubeconfig(credentialsId: 'kubeconfig', serverUrl: '') {
+                     sh "chmod +x changeTag.sh"
+                     sh "./changeTag.sh ${DOCKER_TAG}"
+                     sh "kubectl apply -f node-app-pod.yml"
+                }
             }
         }
     }
