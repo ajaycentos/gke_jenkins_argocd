@@ -46,7 +46,7 @@ pipeline {
         // }
         stage('Deploy to K8s'){
             steps{
-                kubeconfig(credentialsId: 'kubeconfig') {
+                kubeconfig(credentialsId: 'kubeconfig', serverUrl: 'https://192.168.56.33:6443') {
                      sh "chmod +x changeTag.sh"
                      sh "./changeTag.sh ${DOCKER_TAG}"
                      sh "kubectl apply -f node-app-pod.yml"
