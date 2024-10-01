@@ -45,8 +45,7 @@ pipeline {
         //     }
         // }
         stage('Deploy to K8s'){
-            steps{
-                    
+            steps{                    
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubeconfig', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
                     sh "chmod +x changeTag.sh"
                      sh "./changeTag.sh ${DOCKER_TAG}"
@@ -56,7 +55,7 @@ pipeline {
             }
         }
     }
-}
+
 
 def getDockerTag(){
     def tag = sh (script: 'git rev-parse --short=10 HEAD', returnStdout: true).trim()
