@@ -39,7 +39,7 @@ pipeline {
             steps {
                 // Clone the deployment repo
                 dir('deployment_repo') {
-                    git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/ajaycentos/gke_jenkins_argocd_deployment.git'
+                    git branch: 'main', credentialsId: 'git_user_token', url: 'https://github.com/ajaycentos/gke_jenkins_argocd_deployment.git'
                     
                     // Update deployment YAML files with new Docker tag
                     sh """
