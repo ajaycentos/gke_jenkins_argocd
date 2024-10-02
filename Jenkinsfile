@@ -51,7 +51,7 @@ pipeline {
                     cat node_app1/deployment.yaml
                     """
                     // Check changes and push back to the main branch
-                    withCredentials([usernamePassword(credentialsId: 'my-github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'git_user_token', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
 
                     sh """
                     git config user.email "ajaycentos@gmail.com"
