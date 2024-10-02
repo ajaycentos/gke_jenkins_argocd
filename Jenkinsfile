@@ -41,6 +41,7 @@ pipeline {
                 dir('deployment_repo') {
                     git branch: 'main', credentialsId: 'git_user_token', url: 'https://github.com/ajaycentos/gke_jenkins_argocd_deployment.git'
                     
+                    
                     // Update deployment YAML files with new Docker tag
                     sh """
                     sed -i 's#image: docker.io/ajaycentos/sampleapp:.*#image: docker.io/ajaycentos/sampleapp:${DOCKER_TAG}#' node_app1/deployment.yaml
@@ -50,13 +51,17 @@ pipeline {
                     cat node_app1/deployment.yaml
                     """
                     // Check changes and push back to the main branch
+                    withCredentials([usernamePassword(credentialsId: 'my-github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+
                     sh """
                     git config user.email "ajaycentos@gmail.com"
                     git config user.name "AjayCentos"
                     git add node_app1/deployment.yaml
                     git commit -m "Update deployment image to ajaycentos/sampleapp:${DOCKER_TAG}"
-                    git push origin main
+                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ajaycentos/deployment-repo.git main
+
                     """
+                    }
                 }
             }
         }
