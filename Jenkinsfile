@@ -45,7 +45,10 @@ pipeline {
                     sh """
                     sed -i 's#image: ajaycentos/sampleapp:.*#image: ajaycentos/sampleapp:${DOCKER_TAG}#' node_app1/deployment.yaml
                     """
-
+                    sh """
+                    ls
+                    cat node_app1/deployment.yaml
+                    """
                     // Check changes and push back to the main branch
                     sh """
                     git config user.email "ajaycentos@gmail.com"
