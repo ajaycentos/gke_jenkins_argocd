@@ -58,7 +58,7 @@ pipeline {
                     git config user.name "AjayCentos"
                     git add node_app1/deployment.yaml
                     git commit -m "Update deployment image to ajaycentos/sampleapp:${DOCKER_TAG}"
-                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ajaycentos/deployment-repo.git main
+                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ajaycentos/gke_jenkins_argocd_deployment.git main
 
                     """
                     }
