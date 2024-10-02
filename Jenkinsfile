@@ -16,7 +16,7 @@ pipeline {
     stages{
         stage("Git Checkout"){
             steps{
-                git branch: 'build_deploy_k8s_2', credentialsId: 'github-credentials', url: 'https://github.com/ajaycentos/gke_jenkins_argocd.git'
+                git branch: 'build_deploy_k8s_argocd', credentialsId: 'github-credentials', url: 'https://github.com/ajaycentos/gke_jenkins_argocd.git'
             }
         }
         stage('Build Docker image'){
