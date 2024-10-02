@@ -34,29 +34,33 @@ pipeline {
 
             }
         }
-        // stage('Deploy to k8s'){
-        //     steps{
-        //         sh "chmod +x changeTag.sh"
-        //         sh "./changeTag.sh ${DOCKER_TAG}"
-        //         sshagent(['vm3-k8s-privatekey']) {
-        //             sh 'scp -o StrictHostKeyChecking=no node-app-pod.yml ajay@192.168.56.33:/home/ajay/app1'
-        //             sh 'ssh -o StrictHostKeyChecking=no -l ajay 192.168.56.33 kubectl apply -f /home/ajay/app1/node-app-pod.yml'
 
-        //         }       
-        //     }
-        // }
-        stage('Deploy to K8s'){
-            steps{                    
-                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubeconfig', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                    sh "chmod +x changeTag.sh"
-                     sh "./changeTag.sh ${DOCKER_TAG}"
-                     sh "cat node-app-pod.yml"
-                     sh "kubectl apply -f node-app-pod.yml"
-                    }
+        stage('Update Deployment Files in Repo') {
+            steps {
+                // Clone the deployment repo
+                dir('deployment_repo') {
+                    git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/ajaycentos/gke_jenkins_argocd_deployment.git'
+                    
+                    // Update deployment YAML files with new Docker tag
+                    sh """
+                    sed -i 's#image: ajaycentos/sampleapp:.*#image: ajaycentos/sampleapp:${DOCKER_TAG}#' node_app1/deployment.yaml
+                    """
+
+                    // Check changes and push back to the main branch
+                    sh """
+                    git config user.email "ajaycentos@gmail.com"
+                    git config user.name "Ajay Centos"
+                    git add node_app1/deployment.yaml
+                    git commit -m "Update deployment image to ajaycentos/sampleapp:${DOCKER_TAG}"
+                    git push origin main
+                    """
                 }
             }
         }
+
     }
+
+}
 
 
 def getDockerTag(){
