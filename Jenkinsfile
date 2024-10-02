@@ -52,7 +52,7 @@ pipeline {
                     // Check changes and push back to the main branch
                     sh """
                     git config user.email "ajaycentos@gmail.com"
-                    git config user.name "Ajay Centos"
+                    git config user.name "AjayCentos"
                     git add node_app1/deployment.yaml
                     git commit -m "Update deployment image to ajaycentos/sampleapp:${DOCKER_TAG}"
                     git push origin main
