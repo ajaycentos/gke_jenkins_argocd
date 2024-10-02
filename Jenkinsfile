@@ -43,7 +43,7 @@ pipeline {
                     
                     // Update deployment YAML files with new Docker tag
                     sh """
-                    sed -i 's#image: ajaycentos/sampleapp:.*#image: ajaycentos/sampleapp:${DOCKER_TAG}#' node_app1/deployment.yaml
+                    sed -i 's#image: docker.io/ajaycentos/sampleapp:.*#image: docker.io/ajaycentos/sampleapp:${DOCKER_TAG}#' node_app1/deployment.yaml
                     """
                     sh """
                     ls
